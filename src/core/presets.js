@@ -37,8 +37,9 @@ import { TemplatePlugin } from '../plugins/TemplatePlugin';
 import { LineHeightPlugin } from '../plugins/LineHeightPlugin';
 import { TextTransformPlugin } from '../plugins/TextTransformPlugin';
 import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
-import { DirectionPlugin } from '../plugins/DirectionPlugin';
-import { TextShadowPlugin } from '../plugins/TextShadowPlugin';
+import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
+import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
+import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
 
 /**
  * Basic preset - Essential formatting only
@@ -71,7 +72,9 @@ export const PRESET_STANDARD = [
     { name: 'ClearFormat', class: ClearFormatPlugin },
     { name: 'History', class: HistoryPlugin },
     { name: 'BlockUtils', class: BlockUtilsPlugin },
-    { name: 'Code', class: CodePlugin }
+    { name: 'Code', class: CodePlugin },
+    { name: 'AutoSave', class: AutoSavePlugin },
+    { name: 'SmartPaste', class: SmartPastePlugin }
 ];
 
 /**
@@ -111,8 +114,9 @@ export const PRESET_FULL = [
     { name: 'LineHeight', class: LineHeightPlugin },
     { name: 'TextTransform', class: TextTransformPlugin },
     { name: 'LetterSpacing', class: LetterSpacingPlugin },
-    { name: 'Direction', class: DirectionPlugin },
-    { name: 'TextShadow', class: TextShadowPlugin }
+    { name: 'AutoSave', class: AutoSavePlugin },
+    { name: 'SmartPaste', class: SmartPastePlugin },
+    { name: 'ImageUpload', class: ImageUploadPlugin }
 ];
 
 /**

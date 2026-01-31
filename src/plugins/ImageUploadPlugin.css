@@ -1,0 +1,9 @@
+/**
+ * ImageUploadPlugin Styles
+ * Drag-drop zone and upload UI elements
+ */
+
+.editor-content.drag-over {
+    border: 2px dashed #1b9af7 !important;
+    background: rgba(27, 154, 247, 0.05);
+}

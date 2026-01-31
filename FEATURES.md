@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-Flexi Editor comes with **35 built-in plugins** providing comprehensive rich text editing capabilities. This document lists all available features and tools.
+Flexi Editor comes with **41 built-in plugins** providing comprehensive rich text editing capabilities. This document lists all available features and tools.
 
 ---
 
@@ -194,28 +194,11 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
   - Capitalize
 - **Plugin:** `TextTransformPlugin`
 
-### 28. **Text Shadow** ✅
-- **Function:** Add shadow effects to text
-- **Usage:** Select text and configure shadow
-- **Features:**
-  - Shadow color
-  - Shadow offset
-  - Shadow blur
-- **Plugin:** `TextShadowPlugin`
-
-### 29. **Text Direction** ✅
-- **Function:** Change text direction (LTR/RTL)
-- **Usage:** Click Direction button
-- **Options:**
-  - Left to Right (LTR)
-  - Right to Left (RTL)
-- **Plugin:** `DirectionPlugin`
-
 ---
 
 ## 💻 Code & Special Content (3 Tools)
 
-### 30. **Code Block** ✅
+### 28. **Code Block** ✅
 - **Function:** Insert code blocks with syntax highlighting
 - **Usage:** Click Code button
 - **Features:**
@@ -224,12 +207,12 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
   - Syntax highlighting ready
 - **Plugin:** `CodePlugin`
 
-### 31. **Inline Code** ✅
+### 29. **Inline Code** ✅
 - **Function:** Format text as inline code
 - **Usage:** Select text and apply inline code format
 - **Plugin:** `CodePlugin`
 
-### 32. **Special Characters** ✅
+### 30. **Special Characters** ✅
 - **Function:** Insert special characters and symbols
 - **Usage:** Click Special Char button, select character
 - **Features:**
@@ -243,7 +226,7 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
 
 ## 😊 Content Insertion (3 Tools)
 
-### 33. **Emoji Picker** ✅
+### 31. **Emoji Picker** ✅
 - **Function:** Insert emojis into content
 - **Usage:** Click Emoji button, select emoji
 - **Features:**
@@ -252,7 +235,7 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
   - Recently used emojis
 - **Plugin:** `EmojiPlugin`
 
-### 34. **Date & Time** ✅
+### 32. **Date & Time** ✅
 - **Function:** Insert current date and time
 - **Usage:** Click Date/Time button
 - **Features:**
@@ -261,7 +244,7 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
   - Custom formats
 - **Plugin:** `DateTimePlugin`
 
-### 35. **Templates** ✅
+### 33. **Templates** ✅
 - **Function:** Insert pre-defined content templates
 - **Usage:** Click Template button, select template
 - **Features:**
@@ -274,19 +257,19 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
 
 ## 🔧 Editor Tools (9 Tools)
 
-### 36. **Undo** ✅
+### 34. **Undo** ✅
 - **Shortcut:** Ctrl/Cmd + Z
 - **Function:** Undo last action
 - **Usage:** Click Undo button or use keyboard shortcut
 - **Plugin:** `HistoryPlugin`
 
-### 37. **Redo** ✅
+### 35. **Redo** ✅
 - **Shortcut:** Ctrl/Cmd + Shift + Z
 - **Function:** Redo last undone action
 - **Usage:** Click Redo button or use keyboard shortcut
 - **Plugin:** `HistoryPlugin`
 
-### 38. **Find & Replace** ✅
+### 36. **Find & Replace** ✅
 - **Function:** Search and replace text
 - **Usage:** Click Find/Replace button
 - **Features:**
@@ -352,14 +335,14 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
 
 ## 📊 Feature Summary
 
-### Total Features: 44 Tools
+### Total Features: 42 Tools
 
 **By Category:**
 - Text Formatting: 9 tools
 - Paragraph & Structure: 5 tools
 - Alignment: 4 tools
 - Links & Media: 4 tools
-- Advanced Formatting: 7 tools
+- Advanced Formatting: 6 tools
 - Code & Special Content: 3 tools
 - Content Insertion: 3 tools
 - Editor Tools: 9 tools
@@ -386,7 +369,7 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
 - Block Utilities
 - Code Blocks
 
-### Full Preset (35 plugins)
+### Full Preset (41 plugins)
 - All Standard features
 - Videos
 - Tables
@@ -394,8 +377,6 @@ Flexi Editor comes with **35 built-in plugins** providing comprehensive rich tex
 - Line Height
 - Letter Spacing
 - Text Transform
-- Text Shadow
-- Text Direction
 - Superscript/Subscript
 - Special Characters
 - Emojis
@@ -428,7 +409,7 @@ Each feature is implemented as a separate plugin, making the editor:
 const editor = new FlexiEditor({
     element: document.getElementById('editor')
 });
-// All 35 plugins loaded automatically
+// All 34 plugins loaded automatically
 ```
 
 ### Load Specific Preset

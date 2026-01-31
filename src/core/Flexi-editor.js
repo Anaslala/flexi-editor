@@ -38,8 +38,9 @@ import { TemplatePlugin } from '../plugins/TemplatePlugin';
 import { LineHeightPlugin } from '../plugins/LineHeightPlugin';
 import { TextTransformPlugin } from '../plugins/TextTransformPlugin';
 import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
-import { DirectionPlugin } from '../plugins/DirectionPlugin';
-import { TextShadowPlugin } from '../plugins/TextShadowPlugin';
+import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
+import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
+import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
 
 export default class FlexiEditor {
     constructor(config = {}) {
@@ -255,9 +256,10 @@ export default class FlexiEditor {
             { name: 'Template', class: TemplatePlugin },
             { name: 'LineHeight', class: LineHeightPlugin },
             { name: 'TextTransform', class: TextTransformPlugin },
-            { name: 'LetterSpacing', class: LetterSpacingPlugin },
-            { name: 'Direction', class: DirectionPlugin },
-            { name: 'TextShadow', class: TextShadowPlugin }
+            { name: 'LetterSpacingPlugin', class: LetterSpacingPlugin },
+            { name: 'AutoSave', class: AutoSavePlugin },
+            { name: 'SmartPaste', class: SmartPastePlugin },
+            { name: 'ImageUpload', class: ImageUploadPlugin }
         ];
 
         // Register default plugins

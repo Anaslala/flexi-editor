@@ -7,33 +7,28 @@ export class HeadingPlugin {
     init() {
         if (!this.editor.toolbar) return;
 
-        this.editor.toolbar.registerButton('h1', {
-            title: 'Heading 1',
-            icon: '<b>H1</b>',
-            command: 'formatBlock',
-            onAction: (editor) => {
-                editor.execCommand('formatBlock', 'H1');
+        // Create dropdown for headings using select type
+        this.editor.toolbar.registerButton('heading', {
+            type: 'select',
+            title: 'Heading',
+            options: [
+                { value: 'P', text: 'Paragraph' },
+                { value: 'H1', text: 'Heading 1' },
+                { value: 'H2', text: 'Heading 2' },
+                { value: 'H3', text: 'Heading 3' },
+                { value: 'H4', text: 'Heading 4' },
+                { value: 'H5', text: 'Heading 5' },
+                { value: 'H6', text: 'Heading 6' }
+            ],
+            onAction: (editor, value) => {
+                editor.execCommand('formatBlock', value);
             },
-            checkActive: () => {
+            checkActive: (editor) => {
                 const node = document.getSelection().anchorNode;
-                if (!node) return false;
+                if (!node) return 'P';
                 const parent = node.nodeType === 3 ? node.parentNode : node;
-                return parent.nodeName === 'H1';
-            }
-        });
-
-        this.editor.toolbar.registerButton('h2', {
-            title: 'Heading 2',
-            icon: '<b>H2</b>',
-            command: 'formatBlock',
-            onAction: (editor) => {
-                editor.execCommand('formatBlock', 'H2');
-            },
-            checkActive: () => {
-                const node = document.getSelection().anchorNode;
-                if (!node) return false;
-                const parent = node.nodeType === 3 ? node.parentNode : node;
-                return parent.nodeName === 'H2';
+                const tagName = parent.nodeName;
+                return ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(tagName) ? tagName : 'P';
             }
         });
     }

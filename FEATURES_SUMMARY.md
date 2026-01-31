@@ -2,7 +2,7 @@
 
 ## 🎯 Quick Overview
 
-**Total Features: 44 Tools across 35 Plugins**
+**Total Features: 43 Tools across 41 Plugins**
 
 ---
 
@@ -33,11 +33,10 @@
 ✓ Insert Table
 ```
 
-### 🎨 Advanced Formatting (7)
+### 🎨 Advanced Formatting (6)
 ```
 ✓ Font Family           ✓ Font Size            ✓ Line Height
-✓ Letter Spacing        ✓ Text Transform       ✓ Text Shadow
-✓ Text Direction (LTR/RTL)
+✓ Letter Spacing        ✓ Text Transform       ✓ Text Direction (LTR/RTL)
 ```
 
 ### 💻 Code & Special (3)
@@ -63,7 +62,7 @@
 
 | Feature | Basic | Standard | Full |
 |---------|-------|----------|------|
-| **Plugins** | 7 | 15 | 35 |
+| **Plugins** | 7 | 15 | 41 |
 | Bold, Italic, Underline | ✅ | ✅ | ✅ |
 | Lists | ✅ | ✅ | ✅ |
 | Links | ✅ | ✅ | ✅ |
@@ -169,7 +168,7 @@ FlexiEditor.create('#editor', { preset: 'full' });
 new FlexiEditor({
     element: document.getElementById('editor')
 });
-// Loads ALL 35 plugins automatically
+// Loads ALL 41 plugins automatically
 ```
 
 ---
@@ -182,11 +181,11 @@ new FlexiEditor({
 | Structure | 5 | 3 | 0 |
 | Alignment | 4 | 1 | 0 |
 | Media | 4 | 4 | 0 |
-| Advanced | 7 | 7 | 0 |
+| Advanced | 6 | 6 | 0 |
 | Code | 3 | 2 | 0 |
 | Content | 3 | 3 | 0 |
 | Tools | 9 | 9 | 3 |
-| **Total** | **44** | **35** | **6** |
+| **Total** | **43** | **41** | **6** |
 
 ---
 
@@ -238,8 +237,8 @@ FlexiEditor.create('#editor', {
 ## 🎉 Summary
 
 Flexi Editor provides:
-- ✅ **44 powerful tools**
-- ✅ **35 modular plugins**
+- ✅ **43 powerful tools**
+- ✅ **41 modular plugins**
 - ✅ **3 smart presets**
 - ✅ **6 keyboard shortcuts**
 - ✅ **100% customizable**
