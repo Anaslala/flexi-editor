@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JS Example</title>
+    <link rel="stylesheet" href="../dist/style.css">
+</head>
+<body>
+    <div id="editor"></div>
+    
+    <button onclick="getContent()">Get Content</button>
+    <button onclick="setContent()">Set Content</button>
+
+    <script type="module">
+        import FlexiEditor from '../dist/flexi-editor.es.js';
+
+        const editor = new FlexiEditor({
+            element: document.getElementById('editor'),
+            placeholder: 'Start typing...',
+            content: '<p>Hello World!</p>'
+        });
+
+        // Listen to changes
+        editor.on('change', () => {
+            console.log('Content changed:', editor.getData());
+        });
+
+        // Make functions global for buttons
+        window.getContent = () => {
+            alert(editor.getData());
+        };
+
+        window.setContent = () => {
+            editor.setData('<p>New content set!</p>');
+        };
+
+        window.editor = editor;
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "flexi-editor",
+  "version": "1.0.0",
+  "description": "A lightweight, modern flexi-editor with plugin architecture",
+  "main": "./dist/flexi-editor.umd.js",
+  "module": "./dist/flexi-editor.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/flexi-editor.es.js",
+      "require": "./dist/flexi-editor.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "editor",
+    "rich-text",
+    "wysiwyg",
+    "contenteditable",
+    "text-editor",
+    "html-editor"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/flexi-editor"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/flexi-editor/issues"
+  },
+  "homepage": "https://github.com/yourusername/flexi-editor#readme",
+  "devDependencies": {
+    "terser": "^5.46.0",
+    "vite": "^5.0.0"
+  }
+}

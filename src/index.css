@@ -1,0 +1,9 @@
+/* Base styles for the editor */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}

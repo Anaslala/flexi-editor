@@ -1,0 +1,11 @@
+node_modules/
+src/
+demo/
+.git/
+.gitignore
+vite.config.js
+index.html
+*.log
+.DS_Store
+examples
+eslint.config.js
