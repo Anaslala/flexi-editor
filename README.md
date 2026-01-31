@@ -334,9 +334,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Support
 
-- 📧 Email: support@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/flexi-editor/issues)
-- 📖 Docs: [Full Documentation](https://github.com/yourusername/flexi-editor)
+- 📧 Email: kadivalanas96@gmail.com
+- 📖 Docs: [Full Documentation](https://github.com/Anaslala/flexi-editor)
 
 ## 🙏 Acknowledgments
 
@@ -344,4 +343,4 @@ Built with ❤️ using vanilla JavaScript and modern web standards.
 
 ---
 
-**Made with ❤️ by Your Name**
+**Made with ❤️ by Anas Kadival**
