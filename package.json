@@ -1,6 +1,6 @@
 {
   "name": "flexi-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight, modern flexi-editor with plugin architecture",
   "main": "./dist/flexi-editor.umd.js",
   "module": "./dist/flexi-editor.es.js",
