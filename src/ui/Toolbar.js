@@ -1,3 +1,5 @@
+import { ColorPicker } from './ColorPicker.js';
+
 export class Toolbar {
     constructor(editor, element) {
         this.editor = editor;
@@ -51,27 +53,23 @@ export class Toolbar {
             btn.title = config.title;
             btn.type = 'button';
 
-            const input = document.createElement('input');
-            input.type = 'color';
-            input.className = 'editor-toolbar-color-input';
-            input.value = config.value || '#000000';
+            // Initial color bar color (hacky but effective)
+            // The icon usually has a span with style color/background
 
-            const btnClickHandler = () => input.click();
-            btn.addEventListener('click', btnClickHandler);
-            this.eventListeners.push({ element: btn, event: 'click', handler: btnClickHandler });
-
-            const inputHandler = (e) => {
+            const picker = new ColorPicker(this.editor, (color) => {
                 if (config.onAction) {
-                    config.onAction(this.editor, e.target.value);
+                    config.onAction(this.editor, color);
                 }
+                // Update button indicator color if needed, though usually the command does it
+            });
+
+            btn.onclick = () => {
+                picker.show(btn);
             };
-            input.addEventListener('input', inputHandler);
-            this.eventListeners.push({ element: input, event: 'input', handler: inputHandler });
 
             wrapper.appendChild(btn);
-            wrapper.appendChild(input);
             this.element.appendChild(wrapper);
-            this.buttonCache.set(id, { wrapper, btn, input });
+            this.buttonCache.set(id, { wrapper, btn });
             return;
         }
 
@@ -239,6 +237,14 @@ export class Toolbar {
                 btn.classList.remove('active');
             }
         }
+    }
+
+    /**
+     * Get button from cache by id
+     * Helper method for plugins to access toolbar buttons
+     */
+    getButton(id) {
+        return this.buttonCache.get(id);
     }
 
     render() {

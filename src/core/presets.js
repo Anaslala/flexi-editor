@@ -40,6 +40,10 @@ import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
 import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
 import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
 import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
+import { FloatingToolbarPlugin } from '../plugins/FloatingToolbarPlugin';
+import { SlashCommandsPlugin } from '../plugins/SlashCommandsPlugin';
+import { DragDropBlocksPlugin } from '../plugins/DragDropBlocksPlugin';
+import { KeyboardShortcutsPlugin } from '../plugins/KeyboardShortcutsPlugin';
 
 /**
  * Basic preset - Essential formatting only
@@ -74,7 +78,9 @@ export const PRESET_STANDARD = [
     { name: 'BlockUtils', class: BlockUtilsPlugin },
     { name: 'Code', class: CodePlugin },
     { name: 'AutoSave', class: AutoSavePlugin },
-    { name: 'SmartPaste', class: SmartPastePlugin }
+    { name: 'SmartPaste', class: SmartPastePlugin },
+    { name: 'FloatingToolbar', class: FloatingToolbarPlugin },
+    { name: 'KeyboardShortcuts', class: KeyboardShortcutsPlugin }
 ];
 
 /**
@@ -116,7 +122,11 @@ export const PRESET_FULL = [
     { name: 'LetterSpacing', class: LetterSpacingPlugin },
     { name: 'AutoSave', class: AutoSavePlugin },
     { name: 'SmartPaste', class: SmartPastePlugin },
-    { name: 'ImageUpload', class: ImageUploadPlugin }
+    { name: 'ImageUpload', class: ImageUploadPlugin },
+    { name: 'FloatingToolbar', class: FloatingToolbarPlugin },
+    { name: 'SlashCommands', class: SlashCommandsPlugin },
+    { name: 'DragDropBlocks', class: DragDropBlocksPlugin },
+    { name: 'KeyboardShortcuts', class: KeyboardShortcutsPlugin }
 ];
 
 /**

@@ -32,72 +32,132 @@ export class FindReplacePlugin {
             style.id = 'editor-find-replace-styles';
             style.textContent = `
                 .editor-search-highlight {
-                    background-color: yellow;
-                    color: black;
+                    background: #fff59d;
+                    color: #000;
+                    border-radius: 2px;
                 }
                 .editor-search-active {
-                    background-color: orange;
-                    color: black;
-                    font-weight: bold;
+                    background: #ffb300;
+                    color: #000;
+                    font-weight: 600;
+                    border-radius: 2px;
                 }
                 .editor-find-replace {
                     position: absolute;
-                    top: 50px;
-                    right: 10px;
+                    top: 60px;
+                    right: 20px;
                     background: white;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    padding: 10px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                    border: 1px solid #d1d5db;
+                    border-radius: 8px;
+                    padding: 16px;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
                     z-index: 1000;
-                    min-width: 300px;
+                    min-width: 400px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 }
                 .editor-find-replace input {
                     width: 100%;
-                    padding: 6px 8px;
-                    border: 1px solid #ddd;
-                    border-radius: 3px;
+                    padding: 8px 12px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
                     font-size: 14px;
                     box-sizing: border-box;
+                    transition: border-color 0.2s ease;
+                }
+                .editor-find-replace input:focus {
+                    outline: none;
+                    border-color: #1b9af7;
+                    box-shadow: 0 0 0 3px rgba(27, 154, 247, 0.1);
+                }
+                .editor-find-replace input::placeholder {
+                    color: #9ca3af;
                 }
                 .editor-find-replace button {
-                    padding: 6px 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 3px;
-                    background: #f5f5f5;
+                    padding: 7px 14px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    background: white;
+                    color: #374151;
                     cursor: pointer;
                     font-size: 13px;
+                    font-weight: 500;
+                    transition: all 0.15s ease;
                 }
                 .editor-find-replace button:hover {
-                    background: #e0e0e0;
+                    background: #f9fafb;
+                    border-color: #9ca3af;
+                }
+                .editor-find-replace button:active {
+                    background: #f3f4f6;
+                }
+                .editor-find-replace .nav-btn {
+                    min-width: 36px;
+                    height: 36px;
+                    padding: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .editor-find-replace .replace-btn {
+                    background: #1b9af7;
+                    color: white;
+                    border-color: #1b9af7;
+                }
+                .editor-find-replace .replace-btn:hover {
+                    background: #1886d6;
+                    border-color: #1886d6;
+                }
+                .editor-find-replace .replace-all-btn {
+                    background: white;
+                    color: #1b9af7;
+                    border-color: #1b9af7;
+                }
+                .editor-find-replace .replace-all-btn:hover {
+                    background: #eff6ff;
                 }
                 .editor-find-replace .find-replace-row {
                     display: flex;
-                    gap: 5px;
-                    margin-bottom: 8px;
+                    gap: 8px;
+                    margin-bottom: 12px;
                     align-items: center;
+                }
+                .editor-find-replace .find-replace-row:last-of-type {
+                    margin-bottom: 8px;
                 }
                 .editor-find-replace .find-replace-info {
                     font-size: 12px;
-                    color: #666;
-                    margin-top: 5px;
+                    color: #6b7280;
+                    margin-top: 8px;
+                    padding: 6px 10px;
+                    background: #f9fafb;
+                    border-radius: 4px;
+                    text-align: center;
                 }
                 .editor-find-replace .close-btn {
                     position: absolute;
-                    top: 5px;
-                    right: 5px;
+                    top: 10px;
+                    right: 10px;
                     background: transparent;
                     border: none;
-                    font-size: 18px;
+                    font-size: 20px;
                     cursor: pointer;
-                    color: #999;
-                    padding: 0;
-                    width: 20px;
-                    height: 20px;
+                    color: #9ca3af;
+                    padding: 4px;
+                    width: 28px;
+                    height: 28px;
                     line-height: 20px;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.15s ease;
                 }
                 .editor-find-replace .close-btn:hover {
-                    color: #333;
+                    background: #f3f4f6;
+                    color: #374151;
+                }
+                .editor-find-replace .input-wrapper {
+                    flex: 1;
                 }
             `;
             document.head.appendChild(style);
@@ -110,16 +170,20 @@ export class FindReplacePlugin {
         this.dialog.style.display = 'none';
 
         this.dialog.innerHTML = `
-            <button class="close-btn" id="editor-find-close">×</button>
+            <button class="close-btn" id="editor-find-close" title="Close">×</button>
             <div class="find-replace-row">
-                <input type="text" id="editor-find-input" placeholder="Find...">
-                <button id="editor-find-prev-btn">◀</button>
-                <button id="editor-find-next-btn">▶</button>
+                <div class="input-wrapper">
+                    <input type="text" id="editor-find-input" placeholder="Find">
+                </div>
+                <button class="nav-btn" id="editor-find-prev-btn" title="Previous">◀</button>
+                <button class="nav-btn" id="editor-find-next-btn" title="Next">▶</button>
             </div>
             <div class="find-replace-row">
-                <input type="text" id="editor-replace-input" placeholder="Replace with...">
-                <button id="editor-replace-btn">Replace</button>
-                <button id="editor-replace-all-btn">Replace All</button>
+                <div class="input-wrapper">
+                    <input type="text" id="editor-replace-input" placeholder="Replace">
+                </div>
+                <button class="replace-btn" id="editor-replace-btn">Replace</button>
+                <button class="replace-all-btn" id="editor-replace-all-btn">Replace All</button>
             </div>
             <div class="find-replace-info" id="editor-find-info"></div>
         `;
@@ -194,7 +258,7 @@ export class FindReplacePlugin {
         this.highlightText(content, query);
 
         this.updateInfo();
-        
+
         if (this.currentMatches.length > 0) {
             this.currentIndex = 0;
             this.highlightCurrent();
@@ -260,10 +324,10 @@ export class FindReplacePlugin {
             const text = document.createTextNode(span.textContent);
             span.parentNode.replaceChild(text, span);
         });
-        
+
         // Normalize to merge adjacent text nodes
         this.editor.contentArea.normalize();
-        
+
         this.currentMatches = [];
         this.currentIndex = -1;
         this.updateInfo();
@@ -279,7 +343,7 @@ export class FindReplacePlugin {
         if (this.currentIndex >= 0 && this.currentIndex < this.currentMatches.length) {
             const current = this.currentMatches[this.currentIndex];
             current.classList.add(this.activeClass);
-            
+
             // Scroll into view
             current.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -289,14 +353,14 @@ export class FindReplacePlugin {
 
     navigateToNext() {
         if (this.currentMatches.length === 0) return;
-        
+
         this.currentIndex = (this.currentIndex + 1) % this.currentMatches.length;
         this.highlightCurrent();
     }
 
     navigateToPrevious() {
         if (this.currentMatches.length === 0) return;
-        
+
         this.currentIndex = this.currentIndex - 1;
         if (this.currentIndex < 0) {
             this.currentIndex = this.currentMatches.length - 1;
@@ -322,7 +386,7 @@ export class FindReplacePlugin {
         }
 
         this.updateInfo();
-        
+
         if (this.currentMatches.length > 0) {
             this.highlightCurrent();
         }
@@ -335,7 +399,7 @@ export class FindReplacePlugin {
         if (this.currentMatches.length === 0) return;
 
         const count = this.currentMatches.length;
-        
+
         // Replace all matches
         this.currentMatches.forEach(match => {
             const textNode = document.createTextNode(replacement);
@@ -349,7 +413,7 @@ export class FindReplacePlugin {
         // Show success message
         const infoDiv = this.dialog.querySelector('#editor-find-info');
         infoDiv.textContent = `Replaced ${count} occurrence${count !== 1 ? 's' : ''}`;
-        
+
         setTimeout(() => {
             this.updateInfo();
         }, 2000);
@@ -360,7 +424,7 @@ export class FindReplacePlugin {
 
     updateInfo() {
         const infoDiv = this.dialog.querySelector('#editor-find-info');
-        
+
         if (this.currentMatches.length === 0) {
             infoDiv.textContent = 'No matches found';
         } else {
@@ -371,7 +435,7 @@ export class FindReplacePlugin {
     toggleDialog() {
         this.isOpen = !this.isOpen;
         this.dialog.style.display = this.isOpen ? 'block' : 'none';
-        
+
         if (this.isOpen) {
             const findInput = this.dialog.querySelector('#editor-find-input');
             findInput.focus();

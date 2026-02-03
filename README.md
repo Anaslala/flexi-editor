@@ -1,346 +1,206 @@
-# Rich Text Editor
+# 🚀 Flexi-Editor
 
-A lightweight, modern, and extensible rich text editor with a clean plugin architecture. Perfect for content management systems, blogs, and any application requiring rich text editing capabilities.
+[![npm version](https://img.shields.io/npm/v/flexi-editor.svg?style=flat-square)](https://www.npmjs.com/package/flexi-editor)
+[![license](https://img.shields.io/npm/l/flexi-editor.svg?style=flat-square)](LICENSE)
+[![downloads](https://img.shields.io/npm/dt/flexi-editor.svg?style=flat-square)](https://www.npmjs.com/package/flexi-editor)
+[![size](https://img.shields.io/bundlephobia/minzip/flexi-editor?style=flat-square)](https://bundlephobia.com/result?p=flexi-editor)
 
-## ✨ Features
+**The Ultimate Lightweight & Extensible Rich Text Editor for Modern Web Apps.**
 
-- 🎨 **Clean & Modern UI** - Minimal design that fits any application
-- 🔌 **Plugin Architecture** - Easily extend with custom plugins
-- 📱 **Fully Responsive** - Works perfectly on mobile and desktop
-- ⚡ **Lightweight** - Small bundle size (~50KB minified)
-- 🎯 **Zero Dependencies** - No external runtime dependencies
-- ♿ **Accessible** - ARIA labels and keyboard navigation
-- 🎨 **Customizable** - Easy to theme with CSS variables
+Flexi-Editor is a powerful, zero-dependency WYSIWYG editor designed for developers who need full control without the bloat. Built with performance and extensibility in mind, it integrates seamlessly into React, Vue, Angular, or Vanilla JS projects.
+
+---
+
+## ✨ Why Flexi-Editor?
+
+- 🎨 **Premium UI/UX** - sleek, modern design with a dark/light mode adaptable theme.
+- ⚡ **Blazing Fast** - < 50KB (gzipped) with zero external runtime dependencies.
+- 🔌 **Plugin-First Architecture** - Every feature is a plugin. Customize it exactly how you need.
+- 💻 **Developer Friendly** - Strong typing, clear API, and easy integration.
+- 🖱️ **Custom Interaction** - Includes a **Custom Right-Click Context Menu** for quick actions.
+- 📝 **Advanced Code Blocks** - Syntax highlighting for multiple languages with a clean interface.
+
+## 🌟 Key Features
+
+| Category | Features |
+|----------|----------|
+| **Core Formatting** | Bold, Italic, Underline, Strikethrough, Sub/Superscript |
+| **Structure** | Headings (H1-H6), Lists (Ordered/Unordered), Blockquotes |
+| **Rich Media** | Image Uploads (Drag & Drop), Video Embedding, Links |
+| **Productivity** | **Custom Context Menu**, Slash Commands (`/`), Floating Toolbar |
+| **Layout** | Tables, Dividers, Page Breaks, Alignment, Toggle Blocks |
+| **Code** | **Syntax Highlighting** (JS, Python, HTML, CSS, etc.), Line Numbers |
+| **Utilities** | Word Count, Reading Time, Find & Replace, Print, Fullscreen |
+
+---
 
 ## 📦 Installation
 
+Install via npm or yarn:
+
 ```bash
 npm install flexi-editor
-```
-
-Or with yarn:
-
-```bash
+# or
 yarn add flexi-editor
 ```
 
-Or with CDN:
+Or use via CDN:
 
 ```html
 <link rel="stylesheet" href="https://unpkg.com/flexi-editor/dist/style.css">
 <script src="https://unpkg.com/flexi-editor/dist/flexi-editor.umd.js"></script>
 ```
 
+---
+
 ## 🚀 Quick Start
 
-### Basic Usage
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="node_modules/flexi-editor/dist/style.css">
-</head>
-<body>
-    <div id="editor"></div>
-
-    <script type="module">
-        import FlexiEditor from 'flexi-editor';
-
-        const editor = new FlexiEditor({
-            element: document.getElementById('editor'),
-            placeholder: 'Start typing...',
-            content: '<p>Hello World!</p>'
-        });
-    </script>
-</body>
-</html>
-```
-
-### With Module Bundler (Webpack, Vite, etc.)
+### Vanilla JavaScript
 
 ```javascript
 import FlexiEditor from 'flexi-editor';
 import 'flexi-editor/style.css';
 
 const editor = new FlexiEditor({
-    element: document.getElementById('editor'),
-    placeholder: 'Start typing...',
-    content: '<p>Hello World!</p>'
+  element: document.querySelector('#editor'),
+  placeholder: 'Type your story here...',
+  theme: 'dark', // or 'light' (default)
+  onChange: (content) => {
+    console.log('Content updated:', content);
+  }
 });
 ```
 
 ### React Integration
 
 ```jsx
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import FlexiEditor from 'flexi-editor';
 import 'flexi-editor/style.css';
 
-function FlexiEditorComponent() {
-    const editorRef = useRef(null);
-    const instanceRef = useRef(null);
+const MyEditor = () => {
+  const editorRef = useRef(null);
 
-    useEffect(() => {
-        if (editorRef.current && !instanceRef.current) {
-            instanceRef.current = new FlexiEditor({
-                element: editorRef.current,
-                placeholder: 'Start typing...',
-                content: '<p>Hello from React!</p>'
-            });
-        }
-
-        return () => {
-            if (instanceRef.current) {
-                instanceRef.current.destroy();
-            }
-        };
-    }, []);
-
-    return <div ref={editorRef} />;
-}
-
-export default FlexiEditorComponent;
-```
-
-### Vue Integration
-
-```vue
-<template>
-    <div ref="editorElement"></div>
-</template>
-
-<script>
-import FlexiEditor from 'flexi-editor';
-import 'flexi-editor/style.css';
-
-export default {
-    name: 'FlexiEditorComponent',
-    mounted() {
-        this.editor = new FlexiEditor({
-            element: this.$refs.editorElement,
-            placeholder: 'Start typing...',
-            content: '<p>Hello from Vue!</p>'
-        });
-    },
-    beforeUnmount() {
-        if (this.editor) {
-            this.editor.destroy();
-        }
+  useEffect(() => {
+    if (editorRef.current) {
+      new FlexiEditor({
+        element: editorRef.current,
+        content: '<p>Welcome to <b>Flexi-Editor</b> inside React!</p>'
+      });
     }
+  }, []);
+
+  return <div ref={editorRef} style={{ minHeight: '300px' }} />;
 };
-</script>
+
+export default MyEditor;
 ```
-
-## ⚙️ Configuration Options
-
-```javascript
-const editor = new FlexiEditor({
-    // Required: DOM element to mount the editor
-    element: document.getElementById('editor'),
-    
-    // Optional: Initial content (HTML string)
-    content: '<p>Initial content</p>',
-    
-    // Optional: Placeholder text
-    placeholder: 'Start typing...',
-    
-    // Optional: Make editor read-only
-    readOnly: false,
-    
-    // Optional: Custom theme
-    theme: 'default',
-    
-    // Optional: Custom plugins (array of plugin classes)
-    plugins: [MyCustomPlugin],
-    
-    // Optional: External toolbar element
-    toolbar: document.getElementById('custom-toolbar')
-});
-```
-
-## 📚 API Reference
-
-### Methods
-
-#### `getData()`
-Get the current HTML content of the editor.
-
-```javascript
-const html = editor.getData();
-console.log(html); // '<p>Current content</p>'
-```
-
-#### `setData(html)`
-Set the HTML content of the editor.
-
-```javascript
-editor.setData('<p>New content</p>');
-```
-
-#### `execCommand(commandName, ...args)`
-Execute a formatting command.
-
-```javascript
-editor.execCommand('bold');
-editor.execCommand('insertHTML', '<strong>Bold text</strong>');
-```
-
-#### `on(event, callback)`
-Listen to editor events.
-
-```javascript
-editor.on('change', () => {
-    console.log('Content changed:', editor.getData());
-});
-
-editor.on('focus', () => {
-    console.log('Editor focused');
-});
-```
-
-#### `off(event, callback)`
-Remove event listener.
-
-```javascript
-const handler = () => console.log('Changed');
-editor.on('change', handler);
-editor.off('change', handler);
-```
-
-#### `destroy()`
-Destroy the editor instance and clean up.
-
-```javascript
-editor.destroy();
-```
-
-### Events
-
-- `ready` - Editor is initialized and ready
-- `change` - Content has changed
-- `focus` - Editor gained focus
-- `blur` - Editor lost focus
-- `keydown` - Key pressed
-- `keyup` - Key released
-- `mouseup` - Mouse button released
-- `selection-change` - Text selection changed
-
-## 🎨 Customization
-
-### CSS Variables
-
-Customize the editor appearance using CSS variables:
-
-```css
-:root {
-    --editor-primary: #2563eb;
-    --editor-primary-hover: #1d4ed8;
-    --editor-bg: #ffffff;
-    --editor-border: #e5e7eb;
-    --editor-text: #1f2937;
-    --editor-text-light: #6b7280;
-    --editor-hover: #f3f4f6;
-    --editor-active: #e5e7eb;
-    --editor-shadow: rgba(0, 0, 0, 0.1);
-    --editor-radius: 6px;
-}
-```
-
-### Dark Mode Example
-
-```css
-[data-theme="dark"] {
-    --editor-primary: #3b82f6;
-    --editor-primary-hover: #2563eb;
-    --editor-bg: #1f2937;
-    --editor-border: #374151;
-    --editor-text: #f9fafb;
-    --editor-text-light: #9ca3af;
-    --editor-hover: #374151;
-    --editor-active: #4b5563;
-    --editor-shadow: rgba(0, 0, 0, 0.3);
-}
-```
-
-## 🔌 Creating Custom Plugins
-
-```javascript
-class MyCustomPlugin {
-    constructor(editor) {
-        this.editor = editor;
-        this.name = 'MyCustomPlugin';
-    }
-
-    init() {
-        // Register toolbar button
-        if (this.editor.toolbar) {
-            this.editor.toolbar.registerButton('myButton', {
-                title: 'My Custom Button',
-                icon: '<svg>...</svg>',
-                onAction: (editor) => {
-                    // Your custom action
-                    editor.execCommand('insertHTML', '<span>Custom!</span>');
-                }
-            });
-        }
-    }
-
-    destroy() {
-        // Cleanup when editor is destroyed
-    }
-}
-
-// Use the plugin
-const editor = new FlexiEditor({
-    element: document.getElementById('editor'),
-    plugins: [MyCustomPlugin]
-});
-```
-
-## 📦 Built-in Plugins
-
-The editor comes with these built-in plugins:
-
-- **Text Formatting**: Bold, Italic, Underline, Strikethrough
-- **Headings**: H1-H6
-- **Lists**: Ordered and Unordered lists
-- **Alignment**: Left, Center, Right, Justify
-- **Links**: Insert and edit links
-- **Images**: Upload and insert images
-- **Tables**: Create and edit tables
-- **Code**: Code blocks and inline code
-- **Colors**: Text and background colors
-- **Fonts**: Font family and size
-- **History**: Undo and Redo
-- **Special**: Emojis, special characters, templates
-- **Utilities**: Find & Replace, Word Count, Print, Fullscreen
-
-## 🌐 Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📞 Support
-
-- 📧 Email: kadivalanas96@gmail.com
-- 📖 Docs: [Full Documentation](https://github.com/Anaslala/flexi-editor)
-
-## 🙏 Acknowledgments
-
-Built with ❤️ using vanilla JavaScript and modern web standards.
 
 ---
 
-**Made with ❤️ by Anas Kadival**
+## 🛠️ Configuration
+
+Flexi-Editor is highly configurable. Pass these options to the constructor:
+
+```javascript
+const config = {
+  element: HTMLElement,       // Required: The container element
+  content: '',                // Initial HTML content
+  placeholder: 'Start writing...', 
+  readOnly: false,            // Toggle read-only mode
+  theme: 'default',           // 'default' (light) or custom
+  sanitize: false,            // Disable built-in sanitizer for advanced HTML
+  
+  // Custom Toolbar Configuration
+  toolbar: {
+    sticky: true,
+    buttons: ['bold', 'italic', 'link', 'image', 'code', 'fullscreen']
+  },
+  
+  // Event Callbacks
+  onChange: (html) => {},     // Triggered on every change
+  onFocus: () => {},
+  onBlur: () => {}
+};
+```
+
+---
+
+## 🔌 Plugins System
+
+Flexi-Editor is built on a robust plugin system. You can create your own or disable built-in ones.
+
+**Built-in Plugins included:**
+`Paragraph`, `Bold`, `Italic`, `Underline`, `List`, `Heading`, `Link`, `Image`, `Table`, `Code`, `ContextMenu`, `SlashCommands`, `FloatingToolbar`, and more.
+
+### Creating a Custom Plugin
+
+```javascript
+class MyPlugin {
+  constructor(editor) {
+    this.editor = editor;
+    this.name = 'MyPlugin';
+  }
+
+  init() {
+    // Add a button to toolbar
+    this.editor.toolbar.registerButton('shout', {
+      title: 'Shout!',
+      icon: '📢',
+      onAction: () => this.editor.execCommand('insertHTML', '<h1>HELLO!</h1>')
+    });
+  }
+}
+
+// Usage
+new FlexiEditor({
+  element: el,
+  plugins: [MyPlugin]
+});
+```
+
+---
+
+## 🎨 Theming
+
+Flexi-Editor uses CSS variables for easy customization. Override them in your CSS:
+
+```css
+:root {
+  --fe-primary: #3b82f6;       /* Primary Color */
+  --fe-bg: #ffffff;            /* Editor Background */
+  --fe-text: #1f2937;          /* Text Color */
+  --fe-border: #e5e7eb;        /* Border Color */
+  --fe-toolbar-bg: #f3f4f6;    /* Toolbar Background */
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --fe-bg: #1f2937;
+  --fe-text: #f3f4f6;
+  --fe-toolbar-bg: #111827;
+  --fe-border: #374151;
+}
+```
+
+---
+
+## 🤝 Contributing
+
+We love contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+
+1. Fork the repo.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+**Crafted with ❤️ by Anas Kadival**

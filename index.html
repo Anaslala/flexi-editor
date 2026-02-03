@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rich Text Editor</title>
+    <title>Flexi-Editor – Modern Rich Text Editor | WYSIWYG & Notion-like</title>
+    <meta name="description"
+        content="Flexi-Editor is a lightweight, modern WYSIWYG rich text editor with slash commands, floating toolbar, tables, media embeds, and plugin support. A robust CKEditor alternative.">
+    <meta name="keywords"
+        content="rich text editor, wysiwyg editor, notion like editor, ckeditor alternative, javascript editor">
+    <meta name="robots" content="index, follow">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Flexi-Editor",
+      "operatingSystem": "Web",
+      "applicationCategory": "DeveloperTool",
+      "description": "A modern, lightweight WYSIWYG rich text editor with slash commands, floating toolbar, tables, media embeds, and plugin support.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -24,12 +48,78 @@
 
         #editor-container {
             background: white;
+            min-height: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* SEO Visible Section */
+        #seo-info {
+            margin-top: 60px;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            color: #333;
+        }
+
+        #seo-info h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #111;
+        }
+
+        #seo-info p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #seo-info ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #seo-info li {
+            margin-bottom: 8px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+        <!-- Editor Section -->
         <div id="editor-container"></div>
+
+        <!-- SEO Content Section (Visible & Descriptive) -->
+        <section id="seo-info">
+            <h1>Flexi-Editor – The Modern Rich Text Editor</h1>
+            <p>
+                <strong>Flexi-Editor</strong> is a next-generation <strong>WYSIWYG editor</strong> built for modern web
+                applications.
+                Designed to be a lightweight and extensible <strong>CKEditor alternative</strong>, it offers a distinct
+                <strong>Notion-like experience</strong> with slash commands (`/`), a floating toolbar, and drag-and-drop
+                block management.
+            </p>
+
+            <h2>Why Choose Flexi-Editor?</h2>
+            <p>
+                Unlike heavy legacy editors, Flexi-Editor provides a blazing fast performance with zero dependencies.
+                It is perfect for developers building Content Management Systems (CMS), Blogs, or CRM tools in
+                <strong>React</strong>, <strong>Vue</strong>, or Vanilla JavaScript.
+            </p>
+
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>Rich Text Formatting:</strong> Bold, Italic, Headings, Lists, and specific styling controls.
+                </li>
+                <li><strong>Advanced Structure:</strong> Dynamic Tables, Dividers, Page Breaks, and Table of Contents.
+                </li>
+                <li><strong>Developer Friendly:</strong> Full plugin architecture to extend functionality easily.</li>
+                <li><strong>Media Support:</strong> Drag & Drop Image Uploads, Video Embedding, and File Attachments.
+                </li>
+            </ul>
+        </section>
     </div>
 
     <script type="module">
@@ -44,4 +134,5 @@
         window.editor = editor;
     </script>
 </body>
+
 </html>

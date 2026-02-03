@@ -41,6 +41,19 @@ import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
 import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
 import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
 import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
+import { FloatingToolbarPlugin } from '../plugins/FloatingToolbarPlugin';
+import { SlashCommandsPlugin } from '../plugins/SlashCommandsPlugin';
+import { DragDropBlocksPlugin } from '../plugins/DragDropBlocksPlugin';
+import { KeyboardShortcutsPlugin } from '../plugins/KeyboardShortcutsPlugin';
+import { ContentQualityPlugin } from '../plugins/ContentQualityPlugin';
+import { DividerPlugin } from '../plugins/DividerPlugin';
+import { PageBreakPlugin } from '../plugins/PageBreakPlugin';
+import { TableOfContentsPlugin } from '../plugins/TableOfContentsPlugin';
+import { CalloutPlugin } from '../plugins/CalloutPlugin';
+import { ToggleBlockPlugin } from '../plugins/ToggleBlockPlugin';
+import { FootnotePlugin } from '../plugins/FootnotePlugin';
+import { ContextMenuPlugin } from '../plugins/ContextMenuPlugin';
+// import { AIPlugin } from '../plugins/AIPlugin';
 
 export default class FlexiEditor {
     constructor(config = {}) {
@@ -51,7 +64,7 @@ export default class FlexiEditor {
             readOnly: false,
             theme: 'default',
             plugins: [],
-            sanitize: true,
+            sanitize: false, // Disabled to allow Code Block syntax highlighting
             ...config
         };
 
@@ -161,9 +174,9 @@ export default class FlexiEditor {
 
     handleKeyboardShortcuts(e) {
         const ctrl = e.ctrlKey || e.metaKey;
-        
+
         if (ctrl) {
-            switch(e.key.toLowerCase()) {
+            switch (e.key.toLowerCase()) {
                 case 'b':
                     e.preventDefault();
                     this.execCommand('bold');
@@ -190,15 +203,45 @@ export default class FlexiEditor {
     }
 
     handlePaste(e) {
+        // e.preventDefault(); // Don't prevent default immediately? 
+        // Actually, if we want to handle it (sanitize), we MUST prevent default.
         e.preventDefault();
-        
+
+        console.log('Paste event triggered');
         const clipboardData = e.clipboardData || window.clipboardData;
-        let pastedData = clipboardData.getData('text/html') || clipboardData.getData('text/plain');
-        
+        if (!clipboardData) {
+            console.warn('No clipboard data found');
+            return;
+        }
+
+        let pastedData = clipboardData.getData('text/html');
+        if (!pastedData) {
+            pastedData = clipboardData.getData('text/plain');
+            // Wrap plain text in p lines if needed, or let execCommand handle it
+            if (pastedData) {
+                // Convert newlines to breaks for plain text if inserting as HTML
+                pastedData = pastedData.replace(/\n/g, '<br>');
+            }
+        }
+
         if (pastedData) {
             // Basic sanitization
-            pastedData = this.sanitizeHTML(pastedData);
-            this.execCommand('insertHTML', pastedData);
+            if (this.config.sanitize) {
+                pastedData = this.sanitizeHTML(pastedData);
+            }
+
+            // Fallback: If sanitization results in empty/whitespace, try plain text
+            if (!pastedData || !pastedData.trim()) {
+                pastedData = clipboardData.getData('text/plain');
+                if (pastedData) pastedData = pastedData.replace(/\n/g, '<br>');
+            }
+
+            if (pastedData && pastedData.trim()) {
+                console.log('Inserting content...');
+                this.execCommand('insertHTML', pastedData);
+            }
+        } else {
+            console.warn('No text/html or text/plain data found in clipboard');
         }
     }
 
@@ -206,19 +249,24 @@ export default class FlexiEditor {
         // Basic HTML sanitization
         const temp = document.createElement('div');
         temp.innerHTML = html;
-        
+
         // Remove script tags
         temp.querySelectorAll('script, style, iframe, object, embed').forEach(el => el.remove());
-        
-        // Remove event handlers
+
+        // Remove event handlers and styles (to prevent invisible text from dark mode sites)
         temp.querySelectorAll('*').forEach(el => {
+            // Remove all attributes except href, src, alt, title, rowspan, colspan
+            const allowedAttrs = ['href', 'src', 'alt', 'title', 'rowspan', 'colspan', 'target'];
             Array.from(el.attributes).forEach(attr => {
-                if (attr.name.startsWith('on')) {
+                if (!allowedAttrs.includes(attr.name)) {
                     el.removeAttribute(attr.name);
                 }
             });
+
+            // Specifically ensure no inline styles
+            el.removeAttribute('style');
         });
-        
+
         return temp.innerHTML;
     }
 
@@ -257,9 +305,33 @@ export default class FlexiEditor {
             { name: 'LineHeight', class: LineHeightPlugin },
             { name: 'TextTransform', class: TextTransformPlugin },
             { name: 'LetterSpacingPlugin', class: LetterSpacingPlugin },
-            { name: 'AutoSave', class: AutoSavePlugin },
+            {
+                name: 'AutoSave',
+                class: AutoSavePlugin,
+                options: {
+                    saveAdapter: (data) => {
+                        console.log('AutoSaving to localStorage...');
+                        localStorage.setItem('flexi-editor-content', data);
+                        return Promise.resolve();
+                    },
+                    loadAdapter: () => {
+                        return Promise.resolve(localStorage.getItem('flexi-editor-content'));
+                    }
+                }
+            },
             { name: 'SmartPaste', class: SmartPastePlugin },
-            { name: 'ImageUpload', class: ImageUploadPlugin }
+            { name: 'ImageUpload', class: ImageUploadPlugin },
+            { name: 'FloatingToolbar', class: FloatingToolbarPlugin },
+            { name: 'SlashCommands', class: SlashCommandsPlugin },
+            { name: 'DragDropBlocks', class: DragDropBlocksPlugin },
+            { name: 'DragDropBlocks', class: DragDropBlocksPlugin },
+            { name: 'KeyboardShortcuts', class: KeyboardShortcutsPlugin },
+            { name: 'Divider', class: DividerPlugin },
+            { name: 'PageBreak', class: PageBreakPlugin },
+            { name: 'TableOfContents', class: TableOfContentsPlugin },
+            { name: 'Callout', class: CalloutPlugin },
+            { name: 'ToggleBlock', class: ToggleBlockPlugin },
+            { name: 'Footnote', class: FootnotePlugin }
         ];
 
         // Register default plugins
@@ -312,16 +384,18 @@ export default class FlexiEditor {
         try {
             // Restore selection before executing command
             this.selection.restoreSelection();
-            
+
+            // Ensure focus
+            if (document.activeElement !== this.contentArea) {
+                this.contentArea.focus();
+            }
+
             // Execute command
             document.execCommand(commandName, false, value);
-            
+
             // Save selection after command
             this.selection.saveSelection();
-            
-            // Focus content area
-            this.contentArea.focus();
-            
+
             // Trigger events
             this.trigger('change');
             this.trigger('selection-change');
@@ -376,10 +450,10 @@ export default class FlexiEditor {
 
         // Clear content
         this.element.innerHTML = '';
-        
+
         // Clear events
         this.events = {};
-        
+
         // Clear references
         this.contentArea = null;
         this.toolbar = null;

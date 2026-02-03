@@ -26,7 +26,7 @@ export class AutoSavePlugin {
     constructor(editor, options = {}) {
         this.editor = editor;
         this.name = 'AutoSave';
-        
+
         // Merge configuration
         this.options = {
             enabled: true,
@@ -37,12 +37,12 @@ export class AutoSavePlugin {
             ...editor.config.autoSave,
             ...options
         };
-        
+
         this.saveTimeout = null;
         this.changeHandler = null;
         this.editorId = this.generateEditorId();
     }
-    
+
     /**
      * Initialize the plugin
      */
@@ -50,20 +50,22 @@ export class AutoSavePlugin {
         if (!this.options.enabled) {
             return;
         }
-        
-        // Check if adapters are provided
+
+        // Check if adapters are provided, if not, use default LocalStorage
         if (!this.options.saveAdapter || !this.options.loadAdapter) {
-            console.warn('AutoSave: saveAdapter and loadAdapter are required. Plugin will not work without them.');
-            return;
+            console.log('AutoSave: No adapters provided, using default LocalStorage adapter.');
+            this.options.saveAdapter = this.defaultSaveAdapter.bind(this);
+            this.options.loadAdapter = this.defaultLoadAdapter.bind(this);
+            this.options.clearAdapter = this.defaultClearAdapter.bind(this);
         }
-        
+
         // Check for existing draft
         this.checkForDraft();
-        
+
         // Start auto-save
         this.startAutoSave();
     }
-    
+
     /**
      * Generate unique editor ID
      */
@@ -74,14 +76,14 @@ export class AutoSavePlugin {
         }
         return `editor-${Math.random().toString(36).substr(2, 9)}`;
     }
-    
+
     /**
      * Check for existing draft and show recovery prompt
      */
     async checkForDraft() {
         try {
             const draft = await this.options.loadAdapter();
-            
+
             if (draft && draft.content && draft.content.trim() !== '') {
                 this.showRecoveryPrompt(draft);
             }
@@ -89,7 +91,7 @@ export class AutoSavePlugin {
             console.error('AutoSave: Failed to check for draft:', error);
         }
     }
-    
+
     /**
      * Show draft recovery prompt
      */
@@ -107,7 +109,7 @@ export class AutoSavePlugin {
             justify-content: center;
             animation: fadeIn 0.3s ease;
         `;
-        
+
         // Create popup
         const popup = document.createElement('div');
         popup.className = 'draft-recovery-popup';
@@ -120,7 +122,7 @@ export class AutoSavePlugin {
             overflow: hidden;
             animation: slideUp 0.3s ease;
         `;
-        
+
         popup.innerHTML = `
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 32px 24px; text-align: center;">
                 <div style="font-size: 64px; margin-bottom: 16px; animation: bounce 0.6s ease;">💾</div>
@@ -173,10 +175,10 @@ export class AutoSavePlugin {
                 </p>
             </div>
         `;
-        
+
         overlay.appendChild(popup);
         document.body.appendChild(overlay);
-        
+
         // Add animations
         const style = document.createElement('style');
         style.textContent = `
@@ -218,21 +220,21 @@ export class AutoSavePlugin {
             }
         `;
         overlay.appendChild(style);
-        
+
         // Handle restore
         popup.querySelector('.draft-restore').addEventListener('click', () => {
             this.restoreDraft(draft);
             overlay.style.animation = 'fadeOut 0.2s ease';
             setTimeout(() => overlay.remove(), 200);
         });
-        
+
         // Handle discard
         popup.querySelector('.draft-discard').addEventListener('click', () => {
             this.clearDraft();
             overlay.style.animation = 'fadeOut 0.2s ease';
             setTimeout(() => overlay.remove(), 200);
         });
-        
+
         // Close on overlay click
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
@@ -241,7 +243,7 @@ export class AutoSavePlugin {
                 setTimeout(() => overlay.remove(), 200);
             }
         });
-        
+
         // Add fadeOut animation
         const fadeOutStyle = document.createElement('style');
         fadeOutStyle.textContent = `
@@ -251,11 +253,11 @@ export class AutoSavePlugin {
             }
         `;
         overlay.appendChild(fadeOutStyle);
-        
+
         // Store reference for cleanup
         this.recoveryBanner = overlay;
     }
-    
+
     /**
      * Format timestamp for display
      */
@@ -264,16 +266,16 @@ export class AutoSavePlugin {
         const now = new Date();
         const diffMs = now - date;
         const diffMins = Math.floor(diffMs / 60000);
-        
+
         if (diffMins < 1) return 'just now';
         if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-        
+
         const diffHours = Math.floor(diffMins / 60);
         if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-        
+
         return date.toLocaleDateString();
     }
-    
+
     /**
      * Restore draft content
      */
@@ -285,7 +287,7 @@ export class AutoSavePlugin {
             console.error('AutoSave: Failed to restore draft:', error);
         }
     }
-    
+
     /**
      * Clear draft using clearAdapter
      */
@@ -299,7 +301,7 @@ export class AutoSavePlugin {
             console.error('AutoSave: Failed to clear draft:', error);
         }
     }
-    
+
     /**
      * Start auto-save on content change
      */
@@ -307,10 +309,10 @@ export class AutoSavePlugin {
         this.changeHandler = () => {
             this.debouncedSave();
         };
-        
+
         this.editor.on('change', this.changeHandler);
     }
-    
+
     /**
      * Stop auto-save
      */
@@ -319,13 +321,13 @@ export class AutoSavePlugin {
             this.editor.off('change', this.changeHandler);
             this.changeHandler = null;
         }
-        
+
         if (this.saveTimeout) {
             clearTimeout(this.saveTimeout);
             this.saveTimeout = null;
         }
     }
-    
+
     /**
      * Debounced save function
      */
@@ -334,51 +336,51 @@ export class AutoSavePlugin {
         if (this.saveTimeout) {
             clearTimeout(this.saveTimeout);
         }
-        
+
         // Set new timeout
         this.saveTimeout = setTimeout(() => {
             this.saveContent();
         }, this.options.interval);
     }
-    
+
     /**
      * Save content using saveAdapter
      */
     async saveContent() {
         try {
             const content = this.editor.getData();
-            
+
             // Don't save empty content
             if (!content || content.trim() === '') {
                 return;
             }
-            
+
             const draftData = {
                 content: content,
                 timestamp: Date.now(),
                 editorId: this.editorId
             };
-            
+
             // Call user's save adapter
             if (this.options.saveAdapter) {
                 await this.options.saveAdapter(draftData);
             }
-            
+
             // Trigger save event
             this.editor.trigger('autosave', draftData);
-            
+
         } catch (error) {
             console.error('AutoSave: Failed to save content:', error);
         }
     }
-    
+
     /**
      * Manually trigger save
      */
     async save() {
         await this.saveContent();
     }
-    
+
     /**
      * Load draft content using loadAdapter
      */
@@ -393,20 +395,40 @@ export class AutoSavePlugin {
             return null;
         }
     }
-    
+
     /**
      * Cleanup and destroy
      */
     destroy() {
         // Stop auto-save
         this.stopAutoSave();
-        
+
         // Remove recovery banner if exists
         if (this.recoveryBanner && this.recoveryBanner.parentNode) {
             this.recoveryBanner.remove();
         }
-        
+
         // Clear references
         this.recoveryBanner = null;
+    }
+
+    /**
+     * Default LocalStorage Adapters
+     */
+    async defaultSaveAdapter(data) {
+        const key = `flexi_autosave_${this.editorId}`;
+        localStorage.setItem(key, JSON.stringify(data));
+        console.log('AutoSaved to LocalStorage:', new Date(data.timestamp).toLocaleTimeString());
+    }
+
+    async defaultLoadAdapter() {
+        const key = `flexi_autosave_${this.editorId}`;
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    }
+
+    async defaultClearAdapter() {
+        const key = `flexi_autosave_${this.editorId}`;
+        localStorage.removeItem(key);
     }
 }
