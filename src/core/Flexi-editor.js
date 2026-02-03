@@ -38,6 +38,7 @@ import { TemplatePlugin } from '../plugins/TemplatePlugin';
 import { LineHeightPlugin } from '../plugins/LineHeightPlugin';
 import { TextTransformPlugin } from '../plugins/TextTransformPlugin';
 import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
+import { WordSpacingPlugin } from '../plugins/WordSpacingPlugin';
 import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
 import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
 import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
@@ -105,6 +106,28 @@ export default class FlexiEditor {
 
         this.isReady = true;
         this.trigger('ready');
+        
+        // Auto-focus editor after initialization
+        setTimeout(() => {
+            if (!this.config.readOnly && this.contentArea) {
+                this.contentArea.focus();
+                
+                // Place cursor at the end of content
+                const range = document.createRange();
+                const sel = window.getSelection();
+                
+                if (this.contentArea.childNodes.length > 0) {
+                    const lastNode = this.contentArea.childNodes[this.contentArea.childNodes.length - 1];
+                    range.setStartAfter(lastNode);
+                } else {
+                    range.setStart(this.contentArea, 0);
+                }
+                
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }, 100);
     }
 
     setupUI() {
@@ -137,6 +160,7 @@ export default class FlexiEditor {
     bindEvents() {
         const handlers = {
             input: (e) => {
+                this.checkEmptyContent();
                 this.trigger('change', e);
             },
             keydown: (e) => {
@@ -145,6 +169,7 @@ export default class FlexiEditor {
             },
             keyup: (e) => {
                 this.selection.saveSelection();
+                this.checkEmptyContent();
                 this.trigger('keyup', e);
             },
             mouseup: (e) => {
@@ -170,6 +195,14 @@ export default class FlexiEditor {
             this.contentArea.addEventListener(event, handler);
             this.eventListeners.push({ element: this.contentArea, event, handler });
         });
+    }
+
+    checkEmptyContent() {
+        // Clean up empty content to show placeholder
+        const text = this.contentArea.textContent.trim();
+        if (!text) {
+            this.contentArea.innerHTML = '';
+        }
     }
 
     handleKeyboardShortcuts(e) {
@@ -305,6 +338,7 @@ export default class FlexiEditor {
             { name: 'LineHeight', class: LineHeightPlugin },
             { name: 'TextTransform', class: TextTransformPlugin },
             { name: 'LetterSpacingPlugin', class: LetterSpacingPlugin },
+            { name: 'WordSpacing', class: WordSpacingPlugin },
             {
                 name: 'AutoSave',
                 class: AutoSavePlugin,

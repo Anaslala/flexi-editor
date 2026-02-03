@@ -23,56 +23,57 @@
 
 /* Container */
 .editor-container {
-    border: 1px solid var(--ck-color-base-border);
-    border-radius: var(--ck-border-radius);
-    background: var(--ck-color-base-background);
-    font-family: Helvetica, Arial, Tahoma, Verdana, sans-serif;
-    font-size: 13px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
     display: flex;
     flex-direction: column;
     position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .editor-container:focus-within {
-    border-color: var(--ck-color-base-active);
-    box-shadow: 0 0 0 1px var(--ck-color-base-active);
+    border-color: #e5e7eb;
+    box-shadow: none;
 }
 
 /* Toolbar */
 .editor-toolbar {
-    background: var(--ck-color-toolbar-background);
-    border-bottom: 1px solid var(--ck-color-toolbar-border);
-    padding: 8px 10px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 16px;
     display: flex;
-    gap: 3px;
+    gap: 8px;
     flex-wrap: wrap;
     align-items: center;
-    min-height: 46px;
+    min-height: 52px;
 }
 
 .editor-toolbar-separator {
     width: 1px;
     height: 24px;
-    background: var(--ck-color-toolbar-border);
-    margin: 0 6px;
+    background: #e5e7eb;
+    margin: 0 8px;
     align-self: center;
 }
 
 .editor-toolbar-btn {
-    min-width: 32px;
-    height: 32px;
+    min-width: 36px;
+    height: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid transparent;
-    background: var(--ck-color-button-default-background);
-    border-radius: var(--ck-border-radius);
+    border: none;
+    background: transparent;
+    border-radius: 6px;
     cursor: pointer;
-    color: var(--ck-color-base-text);
+    color: #374151;
     transition: all 0.15s ease;
-    padding: 0 7px;
-    font-size: 13px;
-    font-weight: normal;
+    padding: 0 8px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .editor-toolbar-btn svg {
@@ -82,19 +83,18 @@
 }
 
 .editor-toolbar-btn:hover {
-    background: var(--ck-color-button-default-hover-background);
-    border-color: var(--ck-color-button-default-hover-background);
+    background: #f3f4f6;
+    color: #1f2937;
 }
 
 .editor-toolbar-btn.active {
-    background: var(--ck-color-button-on-background);
-    border-color: var(--ck-color-button-on-background);
-    color: var(--ck-color-base-active);
+    background: #dbeafe;
+    color: #1d4ed8;
 }
 
 .editor-toolbar-btn.active:hover {
-    background: var(--ck-color-button-on-hover-background);
-    border-color: var(--ck-color-button-on-hover-background);
+    background: #bfdbfe;
+    color: #1e40af;
 }
 
 /* Select Dropdown */
@@ -408,21 +408,37 @@
 
 /* Content Area */
 .editor-content {
-    padding: 20px;
-    min-height: 200px;
-    max-height: 500px;
+    padding: 32px;
+    min-height: 500px;
+    max-height: none;
     overflow-y: auto;
-    outline: none;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ck-color-base-text);
-    background: var(--ck-color-base-background);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #1f2937;
+    background: #ffffff;
+}
+
+.editor-content:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .editor-content:empty:before {
     content: attr(data-placeholder);
-    color: #999;
+    color: #9ca3af;
     pointer-events: none;
+    font-style: italic;
+}
+
+.editor-content:focus:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    pointer-events: none;
+    font-style: italic;
 }
 
 /* Typography */
@@ -698,11 +714,33 @@
     inset: 0;
     z-index: 9998;
     border-radius: 0;
+    border: none;
+}
+
+.editor-container.fullscreen .editor-toolbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+}
+
+.editor-container.fullscreen .editor-toolbar::-webkit-scrollbar {
+    height: 6px;
+}
+
+.editor-container.fullscreen .editor-toolbar::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+.editor-container.fullscreen .editor-toolbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
 }
 
 .editor-container.fullscreen .editor-content {
     max-height: none;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px);
 }
 
 /* Source View */

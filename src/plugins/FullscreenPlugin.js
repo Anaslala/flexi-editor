@@ -29,7 +29,8 @@ export class FullscreenPlugin {
         if (this.isFullscreen) {
             container.classList.add('editor-fullscreen');
             document.body.style.overflow = 'hidden';
-            // Simple temp styles
+            
+            // Apply fullscreen styles
             Object.assign(container.style, {
                 position: 'fixed',
                 top: 0,
@@ -39,22 +40,59 @@ export class FullscreenPlugin {
                 zIndex: 9999,
                 background: '#fff',
                 borderRadius: 0,
-                border: 'none'
+                border: 'none',
+                display: 'flex',
+                flexDirection: 'column'
             });
-            // Adjust content area height
-            editor.contentArea.style.height = 'calc(100vh - 50px)'; // Approx toolbar height
+            
+            // Get toolbar element
+            const toolbar = editor.toolbar?.element;
+            
+            // Allow toolbar to wrap vertically
+            if (toolbar) {
+                toolbar.style.flexWrap = 'wrap';
+                toolbar.style.flexShrink = '0';
+                toolbar.style.overflowX = 'visible';
+                toolbar.style.overflowY = 'visible';
+            }
+            
+            // Make content area flexible
+            editor.contentArea.style.flex = '1';
+            editor.contentArea.style.height = 'auto';
+            editor.contentArea.style.maxHeight = 'none';
+            editor.contentArea.style.overflow = 'auto';
+            
         } else {
             container.classList.remove('editor-fullscreen');
             document.body.style.overflow = '';
-            // Reset styles
+            
+            // Reset container styles
             container.style.position = '';
+            container.style.top = '';
+            container.style.left = '';
             container.style.width = '';
             container.style.height = '';
             container.style.zIndex = '';
             container.style.background = '';
             container.style.borderRadius = '';
             container.style.border = '';
+            container.style.display = '';
+            container.style.flexDirection = '';
+            
+            // Reset toolbar styles
+            const toolbar = editor.toolbar?.element;
+            if (toolbar) {
+                toolbar.style.flexWrap = '';
+                toolbar.style.flexShrink = '';
+                toolbar.style.overflowX = '';
+                toolbar.style.overflowY = '';
+            }
+            
+            // Reset content area
+            editor.contentArea.style.flex = '';
             editor.contentArea.style.height = '';
+            editor.contentArea.style.maxHeight = '';
+            editor.contentArea.style.overflow = '';
         }
     }
 }

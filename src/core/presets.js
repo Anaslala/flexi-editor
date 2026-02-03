@@ -37,6 +37,7 @@ import { TemplatePlugin } from '../plugins/TemplatePlugin';
 import { LineHeightPlugin } from '../plugins/LineHeightPlugin';
 import { TextTransformPlugin } from '../plugins/TextTransformPlugin';
 import { LetterSpacingPlugin } from '../plugins/LetterSpacingPlugin';
+import { WordSpacingPlugin } from '../plugins/WordSpacingPlugin';
 import { AutoSavePlugin } from '../plugins/AutoSavePlugin';
 import { SmartPastePlugin } from '../plugins/SmartPastePlugin';
 import { ImageUploadPlugin } from '../plugins/ImageUploadPlugin';
@@ -120,6 +121,7 @@ export const PRESET_FULL = [
     { name: 'LineHeight', class: LineHeightPlugin },
     { name: 'TextTransform', class: TextTransformPlugin },
     { name: 'LetterSpacing', class: LetterSpacingPlugin },
+    { name: 'WordSpacing', class: WordSpacingPlugin },
     { name: 'AutoSave', class: AutoSavePlugin },
     { name: 'SmartPaste', class: SmartPastePlugin },
     { name: 'ImageUpload', class: ImageUploadPlugin },
