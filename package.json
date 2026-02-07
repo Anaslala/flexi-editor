@@ -1,6 +1,6 @@
 {
   "name": "flexi-editor",
-  "version": "1.0.6",
+  "version": "1.0.3",
   "description": "Flexi-Editor is a modern, lightweight Flexi Text Editor for web applications. It supports slash commands, floating toolbar, tables, media embeds, drag-and-drop blocks, and a plugin-based architecture. A fast Notion-like and CKEditor alternative for developers.",
   "main": "./dist/flexi-editor.umd.js",
   "module": "./dist/flexi-editor.es.js",
